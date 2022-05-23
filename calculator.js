@@ -102,10 +102,10 @@ const buildNumber = (char) => {
   let valueDisplay = 0;
 
   if (userActivity.operator === "") {
-    if (!isDecimal(userActivity.a)) userActivity.a = userActivity.a === 0 ? `${char}` : `${userActivity.a}${char}`;
+    if (!isDecimal(userActivity.a) || char !== '.') userActivity.a = userActivity.a === 0 ? `${char}` : `${userActivity.a}${char}`;
     valueDisplay = userActivity.a;
   } else {
-    if (!isDecimal(userActivity.b)) userActivity.b = userActivity.b === 0 ? `${char}` : `${userActivity.b}${char}`;
+    if (!isDecimal(userActivity.b) || char !== '.') userActivity.b = userActivity.b === 0 ? `${char}` : `${userActivity.b}${char}`;
     valueDisplay = userActivity.b;
   }
   // Show current value into display
@@ -114,6 +114,7 @@ const buildNumber = (char) => {
 
 // Add operator to calculation
 const setOperator = (op) => {
+  if (userActivity.operator !== "") operate()
   userActivity.operator = op;
   if (op === 'X2') operate(); // Trigger power(a, 2)
 }
