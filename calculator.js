@@ -76,7 +76,7 @@ const operate = () => {
     case '/':
       result = divide(a, b);
       break;
-    case 'X2':
+    case '^':
       result = power(a, 2);
       break;
     case '%':
@@ -116,7 +116,7 @@ const buildNumber = (char) => {
 const setOperator = (op) => {
   if (userActivity.operator !== "") operate()
   userActivity.operator = op;
-  if (op === 'X2') operate(); // Trigger power(a, 2)
+  if (op === '^') operate(); // Trigger power(a, 2)
 }
 
 const signChange = () => {
@@ -140,9 +140,25 @@ equalSign.addEventListener('click', () => operate());
 sign.addEventListener('click', () => signChange())
 
 for (const number in numbers) {
-  if (number < numbers.length) numbers[number].addEventListener('click', () => buildNumber(numbers[number].innerText));
+  if (number < numbers.length) { 
+    numbers[number].addEventListener('click', () => buildNumber(numbers[number].value));
+  }
 }
 
 for (const operator in operators) {
   if (operator < operators.length) operators[operator].addEventListener('click', () => setOperator(operators[operator].value))
 }
+
+document.addEventListener('keypress', (event) => {
+  console.log(event)
+  for (const number in numbers) {
+    if (event.key == numbers[number].value) buildNumber(numbers[number].value);
+  }
+  for (const operator in operators) {
+    if (event.key == operators[operator].value) setOperator(operators[operator].value);
+  }
+
+  if (event.key == equalSign.value || event.key == 'Enter') operate();
+
+  if (event.key == decimal.value) buildNumber(decimal.value);
+});
